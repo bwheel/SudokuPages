@@ -1,0 +1,23 @@
+@model PuzzleViewModel
+@{
+  ViewData["Title"] = $"Print - #{Model.Id}";
+}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <table class="table">
+        <tbody>
+          @for (int i = 0; i < 9; i++)
+          {
+            <tr>
+              @for (int j = 0; j < 9; j++)
+              {
+                <td>@(Model.Grid[i, j] == 0 ? "" : Model.Grid[i, j])</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

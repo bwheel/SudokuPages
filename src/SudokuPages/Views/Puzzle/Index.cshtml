@@ -1,0 +1,65 @@
+﻿@model PuzzleViewModel
+@{
+    ViewData["Title"] = $"Puzzle - #{Model.Id}";
+    ViewData["PuzzleId"] = Model.Id;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <p class="lead">
+                <a asp-controller="Puzzle" asp-action="Index" asp-route-id="@Model.Id">Puzzle#
+                    @Model.Id</a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a asp-controller="Puzzle" asp-action="Random" class="btn btn-outline-primary">
+                    <i class="bi bi-shuffle"></i>
+                    <span class="ms-2">Random</span>
+                </a>
+                <button type="button" class="btn btn-outline-primary" onclick="copyToClipboard()">
+                    <i class="bi bi-copy"></i>
+                    <span class="ms-2">Link</span>
+                </button>
+                <a asp-controller="Puzzle" asp-action="Solution" asp-route-id="@Model.Id"
+                    class="btn btn-outline-primary">
+                    <i class="bi bi-border-all"></i>
+                    <span class="ms-2">Solution</span>
+                </a>
+                <a asp-controller="Puzzle" asp-action="Print" asp-route-id="@Model.Id" class="btn btn-outline-primary">
+                    <i class="bi bi-printer"></i>
+                    <span class="ms-2">Print</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <tbody>
+                    @for (int i = 0; i < 9; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < 9; j++)
+                            {
+                                <td>@(Model.Grid[i, j] == 0 ? "" : Model.Grid[i, j])</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyToClipboard() {
+            console.log(`copied url clipboard.a window.location.href: {window.location.href}`)
+            navigator.clipboard.writeText(window.location.href);
+        }
+    </script>
+}
