@@ -1,2 +1,2 @@
 # SudokuPages
-Random Sudoku w/ solutions - print and soluve
+Random Sudoku w/ solutions - print and solve
