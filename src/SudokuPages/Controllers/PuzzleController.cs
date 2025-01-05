@@ -1,34 +1,42 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SudokuPages.Data.Repos;
+using SudokuPages.Domain;
 using SudokuPages.Models;
 
 namespace SudokuPages.Controllers;
 
+[Route("[controller]")]
 public class PuzzleController : Controller
 {
     private readonly ILogger<PuzzleController> _logger;
-    private readonly SudokuDbContext _dbContext;
+    private readonly PuzzleRepo _puzzleRepo;
+    private readonly PuzzleService _puzzleService;
 
-    public PuzzleController(ILogger<PuzzleController> logger, SudokuDbContext dbContext)
+    public PuzzleController(ILogger<PuzzleController> logger, PuzzleRepo puzzleRepo, PuzzleService puzzleService)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        _puzzleRepo = puzzleRepo;
+        _puzzleService = puzzleService;
     }
 
-    [HttpGet("/{id:int?}")]
+    [HttpGet]
+    [Route("/{id:int?}")]
+    [Route("/[controller]/{id:int}")]
     public IActionResult Index(int? id)
     {
+        _logger.LogInformation("Puzzle loading with id: {0}", id);
         if (!id.HasValue)
         {
-            int max = _dbContext.Puzzles.OrderByDescending(x => x.Id).First().Id;
-            int min = _dbContext.Puzzles.OrderBy(x => x.Id).First().Id;
-            Random r = new Random((int)DateTime.Now.Ticks);
-            id = r.Next(min, max);
+            id = _puzzleRepo.GetRandomId();
             return RedirectToAction("Index", new { id });
         }
-        var puzzle = _dbContext.Puzzles.Where(x => x.Id == id).First()!;
-        var grid = convertToGrid(puzzle.Initial);
+
+        var puzzle = _puzzleRepo.GetById(id.Value);
+        ArgumentNullException.ThrowIfNull(puzzle);
+
+        var grid = _puzzleService.ConvertPuzzleTo2DGrid(puzzle.Initial);
         PuzzleViewModel viewModel = new PuzzleViewModel()
         {
             Id = puzzle.Id,
@@ -36,60 +44,29 @@ public class PuzzleController : Controller
         };
         return View(viewModel);
     }
+
 
     [HttpGet]
     public IActionResult Random()
     {
-        int max = _dbContext.Puzzles.OrderByDescending(x => x.Id).First().Id;
-        int min = _dbContext.Puzzles.OrderBy(x => x.Id).First().Id;
-        Random r = new Random((int)DateTime.Now.Ticks);
-        var id = r.Next(min, max);
+        var id = _puzzleRepo.GetRandomId();
         return RedirectToAction("Index", new { id });
     }
 
 
-    [HttpGet("/Solution/{id:int}")]
-    public IActionResult Solution(int id)
+    [HttpGet("/[controller]/Print/{id:int}")]
+    public IActionResult Print([FromRoute] int id)
     {
-        var puzzle = _dbContext.Puzzles.Where(x => x.Id == id).First()!;
+        var puzzle = _puzzleRepo.GetById(id);
+        ArgumentNullException.ThrowIfNull(puzzle);
 
-        var grid = convertToGrid(puzzle.Solution);
+        var grid = _puzzleService.ConvertPuzzleTo2DGrid(puzzle.Initial);
         PuzzleViewModel viewModel = new PuzzleViewModel()
         {
             Id = puzzle.Id,
             Grid = grid,
         };
         return View(viewModel);
-    }
-
-    [HttpGet("/Print/{id:int}")]
-    public IActionResult Print(int id)
-    {
-        var puzzle = _dbContext.Puzzles.Where(x => x.Id == id).First()!;
-        var grid = convertToGrid(puzzle.Initial);
-        PuzzleViewModel viewModel = new PuzzleViewModel()
-        {
-            Id = puzzle.Id,
-            Grid = grid,
-        };
-        return View(viewModel);
-    }
-
-    private static int[,] convertToGrid(string? puzzle)
-    {
-        if (string.IsNullOrWhiteSpace(puzzle))
-            puzzle = new string('.', 9 * 9);
-        char[] elements = puzzle.ToCharArray();
-        int[,] grid = new int[9, 9];
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                char element = elements[i * 9 + j];
-                grid[i, j] = element == '.' ? 0 : int.Parse(element.ToString());
-            }
-        }
-        return grid;
     }
 
 

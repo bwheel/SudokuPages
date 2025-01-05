@@ -50,7 +50,8 @@
       "library": "StaticAssets/js",
       "destination": "wwwroot/js",
       "files": [
-        "site.js"
+        "site.js",
+        "open-print-dialog.js"
       ]
     },
     {
