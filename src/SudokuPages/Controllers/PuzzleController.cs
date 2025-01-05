@@ -37,25 +37,9 @@ public class PuzzleController : Controller
         return View(viewModel);
     }
 
-    private static int[,] convertToGrid(string puzzle)
-    {
-        char[] elements = puzzle.ToCharArray();
-        int[,] grid = new int[9, 9];
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                char element = elements[i * 9 + j];
-                grid[i, j] = element == '.' ? 0 : int.Parse(element.ToString());
-            }
-        }
-        return grid;
-    }
-
     [HttpGet]
     public IActionResult Random()
     {
-
         int max = _dbContext.Puzzles.OrderByDescending(x => x.Id).First().Id;
         int min = _dbContext.Puzzles.OrderBy(x => x.Id).First().Id;
         Random r = new Random((int)DateTime.Now.Ticks);
@@ -69,7 +53,7 @@ public class PuzzleController : Controller
     {
         var puzzle = _dbContext.Puzzles.Where(x => x.Id == id).First()!;
 
-        var grid = convertToGrid(puzzle.Solution!);
+        var grid = convertToGrid(puzzle.Solution);
         PuzzleViewModel viewModel = new PuzzleViewModel()
         {
             Id = puzzle.Id,
@@ -89,6 +73,23 @@ public class PuzzleController : Controller
             Grid = grid,
         };
         return View(viewModel);
+    }
+
+    private static int[,] convertToGrid(string? puzzle)
+    {
+        if (string.IsNullOrWhiteSpace(puzzle))
+            puzzle = new string('.', 9 * 9);
+        char[] elements = puzzle.ToCharArray();
+        int[,] grid = new int[9, 9];
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                char element = elements[i * 9 + j];
+                grid[i, j] = element == '.' ? 0 : int.Parse(element.ToString());
+            }
+        }
+        return grid;
     }
 
 
