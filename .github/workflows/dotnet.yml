@@ -11,12 +11,27 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Display dotnet version
+      run: dotnet --version
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Install libman package manager
+      run: dotnet tool install Microsoft.Web.LibraryManager.Cli
+    - name: Build
+      run: dotnet build --no-restore
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
