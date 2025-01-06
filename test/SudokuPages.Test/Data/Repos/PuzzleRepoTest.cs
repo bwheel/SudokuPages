@@ -61,7 +61,7 @@ public class PuzzleRepoTest : IDisposable
     // act
     var actual = repo.GetById(id);
     // assert
-    Assert.Equal(_expectedPuzzleMin, actual);
+    Assert.Equal(_expectedPuzzleMid, actual);
   }
 
   [Fact]
