@@ -25,6 +25,8 @@ jobs:
       run: dotnet --version
     - name: Restore dependencies
       run: dotnet restore
+    - name: Install libman package manager
+      run: dotnet tool install Microsoft.Web.LibraryManager.Cli
     - name: Build
       run: dotnet build --no-restore
     - name: Test
