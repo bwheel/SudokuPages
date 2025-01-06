@@ -17,11 +17,11 @@ public class PuzzleService
     ArgumentException.ThrowIfNullOrWhiteSpace(dbPuzzle, nameof(dbPuzzle));
     ArgumentOutOfRangeException.ThrowIfNotEqual(dbPuzzle.Length, c_numElements, nameof(dbPuzzle));
 
-    var elements = new Stack<char>(dbPuzzle.ToCharArray());
+    var elements = new Queue<char>(dbPuzzle.ToCharArray());
     int[,] grid = new int[c_numCols, c_numRows];
     for (int i = 0; i < c_numCols; i++)
       for (int j = 0; j < c_numRows; j++)
-        grid[i, j] = mapDbPuzzleElementToGridElement(elements.Pop());
+        grid[i, j] = mapDbPuzzleElementToGridElement(elements.Dequeue());
 
     return grid;
   }

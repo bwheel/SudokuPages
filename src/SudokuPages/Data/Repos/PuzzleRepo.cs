@@ -15,43 +15,33 @@ public class PuzzleRepo
     public static string MaxIdKey = "Puzzle.Id.Max";
     public static string MinIdKey = "Puzzle.Id.Min";
   }
-  public PuzzleRepo(SudokuDbContext dbContext)
-  {
-    _dbContext = dbContext;
+  public PuzzleRepo(SudokuDbContext dbContext) => _dbContext = dbContext;
 
-  }
-
-  public Puzzle? GetById(int id) => GetByIdAsync(id).Result;
-
-  public async Task<Puzzle?> GetByIdAsync(int id)
+  public Puzzle? GetById(int id)
   {
     ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(id, 0, nameof(id));
-    var result = await _dbContext
+    var result = _dbContext
         .Puzzles
         .Where(p => p.Id == id)
-        .FirstOrDefaultAsync();
+        .FirstOrDefault();
     return result;
   }
 
-  public int GetMinId() => GetMinIdAsync().Result;
-  public async Task<int> GetMinIdAsync()
+  public int GetMinId()
   {
     if (_simpleCache.TryGetValue(CacheKeys.MinIdKey, out object? minId))
       return (int)minId;
-    var puzzle = await _dbContext.Puzzles.OrderBy(x => x.Id).FirstAsync();
-    ArgumentNullException.ThrowIfNull(puzzle);
+    var puzzle = _dbContext.Puzzles.OrderBy(x => x.Id).First();
     _simpleCache[CacheKeys.MinIdKey] = puzzle.Id;
     return puzzle.Id;
   }
 
-  public int GetMaxId() => GetMaxIdAsync().Result;
-  public async Task<int> GetMaxIdAsync()
+  public int GetMaxId()
   {
     if (_simpleCache.TryGetValue(CacheKeys.MaxIdKey, out object? maxId))
       return (int)maxId;
 
-    var puzzle = await _dbContext.Puzzles.OrderByDescending(x => x.Id).FirstAsync();
-    ArgumentNullException.ThrowIfNull(puzzle);
+    var puzzle = _dbContext.Puzzles.OrderByDescending(x => x.Id).First();
     _simpleCache[CacheKeys.MaxIdKey] = puzzle.Id;
 
     return puzzle.Id;
