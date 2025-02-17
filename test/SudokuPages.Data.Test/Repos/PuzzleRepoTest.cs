@@ -1,8 +1,8 @@
 using SudokuPages.Data.Models;
 using SudokuPages.Data.Repos;
-using SudokuPages.Fixtures;
+using SudokuPages.Data.Test.Fixtures;
 
-namespace SudokuPages.Test.Data.Repos;
+namespace SudokuPages.Data.Test.Repos;
 
 
 public class PuzzleRepoTest : IDisposable

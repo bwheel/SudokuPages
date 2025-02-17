@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SudokuPages\SudokuPages.csproj" />
+    <ProjectReference Include="..\..\src\SudokuPages.Data\SudokuPages.Data.csproj" />
   </ItemGroup>
 
 </Project>
