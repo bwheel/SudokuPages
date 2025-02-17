@@ -3,6 +3,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace SudokuPages.Data.Models;
+
 [EntityTypeConfiguration(typeof(PuzzleEntityConfiguration))]
 public class Puzzle
 {

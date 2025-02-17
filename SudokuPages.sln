@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -10,6 +10,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A4447F5B-C05E-486A-8E37-23DC759A49A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuPages.Test", "test\SudokuPages.Test\SudokuPages.Test.csproj", "{7D07E0DF-6799-4602-9BD0-872C196DCB5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{59D250FF-035E-430B-9F5E-5092B68A18F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateInitialDb", "scripts\CreateInitialDb\CreateInitialDb.csproj", "{6C84C147-3D11-4A59-8258-B826E38855E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,9 +32,14 @@ Global
 		{7D07E0DF-6799-4602-9BD0-872C196DCB5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D07E0DF-6799-4602-9BD0-872C196DCB5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D07E0DF-6799-4602-9BD0-872C196DCB5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C84C147-3D11-4A59-8258-B826E38855E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C84C147-3D11-4A59-8258-B826E38855E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C84C147-3D11-4A59-8258-B826E38855E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C84C147-3D11-4A59-8258-B826E38855E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5C04DA5C-07B8-4FBF-B3D5-D7A4062572FC} = {8B75E8F1-8046-4D41-89BF-2BC2157442A0}
 		{7D07E0DF-6799-4602-9BD0-872C196DCB5A} = {A4447F5B-C05E-486A-8E37-23DC759A49A0}
+		{6C84C147-3D11-4A59-8258-B826E38855E3} = {59D250FF-035E-430B-9F5E-5092B68A18F4}
 	EndGlobalSection
 EndGlobal
