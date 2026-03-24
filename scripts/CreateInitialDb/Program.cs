@@ -23,11 +23,11 @@ class Program
         [Name("id")]
         public int Id { get; set; }
         [Name("puzzle")]
-        public string Puzzle { get; set; }
+        public required string Puzzle { get; set; }
         [Name("solution")]
-        public string Solution { get; set; }
+        public required string Solution { get; set; }
         [Name("clues")]
-        public string Clues { get; set; }
+        public required string Clues { get; set; }
         [Name("difficulty")]
         public decimal Difficulty { get; set; }
     }

@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/scripts/">
+    <Project Path="scripts/CreateInitialDb/CreateInitialDb.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/SudokuPages.Data/SudokuPages.Data.csproj" />
+    <Project Path="src/SudokuPages/SudokuPages.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/SudokuPages.Data.Test/SudokuPages.Data.Test.csproj" />
+    <Project Path="test/SudokuPages.Test/SudokuPages.Test.csproj" />
+  </Folder>
+</Solution>
