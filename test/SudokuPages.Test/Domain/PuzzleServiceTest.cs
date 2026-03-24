@@ -1,13 +1,28 @@
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using SudokuPages.Data.Repos;
 using SudokuPages.Domain;
 
 namespace SudokuPages.Test.Domain;
 
 public class PuzzelServiceTest
 {
+  private static PuzzleService CreateService()
+  {
+    var connection = new SqliteConnection("DataSource=:memory:");
+    connection.Open();
+    var options = new DbContextOptionsBuilder<SudokuDbContext>()
+      .UseSqlite(connection)
+      .Options;
+    var context = new SudokuDbContext(options);
+    context.Database.EnsureCreated();
+    return new PuzzleService(new PuzzleRepo(context));
+  }
+
   [Fact]
   public void PuzzelService_ctor_NotNull()
   {
-    var service = new PuzzleService();
+    var service = CreateService();
     Assert.NotNull(service);
   }
 
@@ -17,7 +32,7 @@ public class PuzzelServiceTest
   [InlineData("123456789123456789123456789123456789123456789123456789123456789123456789123456789")]
   public void PuzzelService_ConvertPuzzleTo2DGrid_NotNull(string? dbPuzzle)
   {
-    var service = new PuzzleService();
+    var service = CreateService();
 
     var result = service.ConvertPuzzleTo2DGrid(dbPuzzle);
     Assert.NotNull(result);
@@ -28,7 +43,7 @@ public class PuzzelServiceTest
   [InlineData("too-long123456789123456789123456789123456789123456789123456789123456789123456789123456789")]
   public void PuzzleService_ConvertPuzzleTo2DGrid_ThrowsArgumentOutOfRangeException(string? dbPuzzle)
   {
-    var service = new PuzzleService();
+    var service = CreateService();
     Assert.Throws<ArgumentOutOfRangeException>(() => service.ConvertPuzzleTo2DGrid(dbPuzzle));
   }
 
@@ -36,7 +51,7 @@ public class PuzzelServiceTest
   [Fact]
   public void PuzzleService_ConvertPuzzleTo2DGrid_ThrowsArgumentNullException()
   {
-    var service = new PuzzleService();
+    var service = CreateService();
     Assert.Throws<ArgumentNullException>(() => service.ConvertPuzzleTo2DGrid(null));
   }
 
@@ -50,7 +65,7 @@ public class PuzzelServiceTest
   [InlineData("\n")]
   public void PuzzleService_ConvertPuzzleTo2DGrid_ThrowsArgumentException(string dbPuzzle)
   {
-    var service = new PuzzleService();
+    var service = CreateService();
     Assert.Throws<ArgumentException>(() => service.ConvertPuzzleTo2DGrid(dbPuzzle));
   }
 
@@ -71,7 +86,7 @@ public class PuzzelServiceTest
       {1,2,3,4,5,6,7,8,9},
     };
 
-    var service = new PuzzleService();
+    var service = CreateService();
     var actual = service.ConvertPuzzleTo2DGrid(dbPuzzle);
     for (int i = 0; i < 9; i++)
     {

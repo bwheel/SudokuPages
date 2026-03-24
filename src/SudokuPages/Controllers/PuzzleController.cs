@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SudokuPages.Data.Repos;
@@ -33,16 +32,7 @@ public class PuzzleController : Controller
             return RedirectToAction("Index", new { id });
         }
 
-        var puzzle = _puzzleRepo.GetById(id.Value);
-        ArgumentNullException.ThrowIfNull(puzzle);
-
-        var grid = _puzzleService.ConvertPuzzleTo2DGrid(puzzle.Initial);
-        PuzzleViewModel viewModel = new PuzzleViewModel()
-        {
-            Id = puzzle.Id,
-            Grid = grid,
-        };
-        return View(viewModel);
+        return View(_puzzleService.GetPuzzleViewModelById(id.Value));
     }
 
 
@@ -57,16 +47,7 @@ public class PuzzleController : Controller
     [HttpGet("/[controller]/Print/{id:int}")]
     public IActionResult Print([FromRoute] int id)
     {
-        var puzzle = _puzzleRepo.GetById(id);
-        ArgumentNullException.ThrowIfNull(puzzle);
-
-        var grid = _puzzleService.ConvertPuzzleTo2DGrid(puzzle.Initial);
-        PuzzleViewModel viewModel = new PuzzleViewModel()
-        {
-            Id = puzzle.Id,
-            Grid = grid,
-        };
-        return View(viewModel);
+        return View(_puzzleService.GetPuzzleViewModelById(id));
     }
 
 
